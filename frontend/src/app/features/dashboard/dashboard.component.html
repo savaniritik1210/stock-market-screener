@@ -1,0 +1,46 @@
+<div class="dashboard">
+  <section class="hero">
+    <h1>Stock Market Screener</h1>
+    <p class="subtitle">Compare intraday and five-day swing setups using historical success rates, uncertainty and returns after costs. Research only, not guaranteed predictions.</p>
+
+    <form class="search-box" (ngSubmit)="onSearchSubmit()">
+      <input
+        type="text"
+        [(ngModel)]="symbol"
+        name="symbol"
+        aria-label="NSE stock symbol"
+        placeholder="Enter stock symbol e.g. RELIANCE"
+        autocomplete="off"
+      />
+      <button type="submit">Compare trades</button>
+    </form>
+
+    <div class="quick-picks">
+      <span>Quick picks:</span>
+      <button *ngFor="let s of popularSymbols" (click)="goToStock(s)" class="chip">{{ s }}</button>
+    </div>
+  </section>
+
+  <section class="status-card">
+    <h3>System Status</h3>
+    <div *ngIf="healthLoading">Checking backend connection…</div>
+    <div *ngIf="!healthLoading && healthError" class="status-error">
+      Could not reach backend API. Make sure the Spring Boot app is running on port 8085.
+    </div>
+    <div *ngIf="!healthLoading && !healthError && dbHealth as h">
+      <div class="status-row">
+        <span class="dot" [class.ok]="h.connected" [class.bad]="!h.connected"></span>
+        Database: {{ h.connected ? 'Connected' : 'Disconnected' }}
+      </div>
+      <div class="status-row" *ngIf="h.database">{{ h.database }} {{ h.databaseVersion }}</div>
+      <div class="status-row" *ngIf="h.error">{{ h.error }}</div>
+    </div>
+  </section>
+
+  <section class="links">
+    <a routerLink="/scanner" class="card-link">
+      <h3>Market Scanner</h3>
+      <p>Scan multiple stocks at once and rank by confluence score.</p>
+    </a>
+  </section>
+</div>

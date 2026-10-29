@@ -1,0 +1,133 @@
+.dashboard {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+  color: #e6edf3;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 32px;
+
+  h1 {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    color: #93a4b3;
+    max-width: 620px;
+    margin: 0 auto 24px;
+  }
+}
+
+.search-box {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+
+  input {
+    width: 320px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #2a3a48;
+    background: #111820;
+    color: #e6edf3;
+    font-size: 1rem;
+  }
+
+  button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    background: #39d98a;
+    color: #04140c;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #2fc27a;
+  }
+}
+
+.quick-picks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  align-items: center;
+  color: #93a4b3;
+  font-size: 0.9rem;
+}
+
+.chip {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid #2a3a48;
+  background: #131b23;
+  color: #e6edf3;
+  cursor: pointer;
+}
+
+.chip:hover {
+  border-color: #39d98a;
+  color: #39d98a;
+}
+
+.status-card {
+  background: #111820;
+  border: 1px solid #202c37;
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin-bottom: 24px;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 0.92rem;
+  color: #c4d2dd;
+}
+
+.status-error {
+  color: #e0645a;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot.ok { background: #39d98a; }
+.dot.bad { background: #e0645a; }
+
+.links {
+  display: flex;
+  gap: 16px;
+}
+
+.card-link {
+  flex: 1;
+  background: #111820;
+  border: 1px solid #202c37;
+  border-radius: 10px;
+  padding: 18px 20px;
+  text-decoration: none;
+  color: #e6edf3;
+  transition: border-color 0.2s ease;
+}
+
+.card-link:hover {
+  border-color: #39d98a;
+}
+
+.card-link p {
+  color: #93a4b3;
+  margin-top: 6px;
+}

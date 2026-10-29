@@ -1,0 +1,14 @@
+{
+  "name": "stock-screener-local-tools",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test smartapi-check.test.mjs"
+  },
+  "dependencies": {
+    "ws": "^8.18.3"
+  }
+}

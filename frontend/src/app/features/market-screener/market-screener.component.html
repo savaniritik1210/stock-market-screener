@@ -1,0 +1,44 @@
+<div class="screener-page">
+  <a routerLink="/" class="back-link">&larr; Back to dashboard</a>
+
+  <header class="page-header">
+    <h1>Market Scanner</h1>
+    <button (click)="runScan()" [disabled]="loading">
+      {{ loading ? 'Scanning…' : 'Run Scan' }}
+    </button>
+  </header>
+
+  <p class="hint" *ngIf="!hasScanned && !loading">Scans a default NSE watchlist (RELIANCE, TCS, INFY, HDFCBANK, ICICIBANK, SBIN, ITC, LT) and ranks by confluence score.</p>
+
+  <div *ngIf="error" class="error-box">{{ error }}</div>
+  <p class="hint">Rule scores are not success probabilities. Prices may be delayed. Open a stock to compare historical intraday and swing evidence before considering any entry.</p>
+
+  <table class="results" *ngIf="results.length">
+    <thead>
+      <tr>
+        <th>Symbol</th>
+        <th>Score</th>
+        <th>Signal</th>
+        <th>Direction</th>
+        <th>Setup</th>
+        <th>Entry</th>
+        <th>Stop</th>
+        <th>Target 1</th>
+        <th>R:R</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of results" [routerLink]="['/stock', r.symbol]" class="row-link">
+        <td><a [routerLink]="['/stock', r.symbol]">{{ r.symbol }}</a></td>
+        <td><app-score-badge [score]="r.score"></app-score-badge></td>
+        <td>{{ r.signalType }}</td>
+        <td>{{ r.direction }}</td>
+        <td>{{ r.setup }}</td>
+        <td>{{ r.signalType === 'NO_SETUP' || r.entry === null ? '—' : (r.entry | number:'1.2-2') }}</td>
+        <td>{{ r.signalType === 'NO_SETUP' || r.stopLoss === null ? '—' : (r.stopLoss | number:'1.2-2') }}</td>
+        <td>{{ r.signalType === 'NO_SETUP' || r.target1 === null ? '—' : (r.target1 | number:'1.2-2') }}</td>
+        <td>{{ r.signalType === 'NO_SETUP' || r.riskReward === null ? '—' : (r.riskReward | number:'1.2-2') }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

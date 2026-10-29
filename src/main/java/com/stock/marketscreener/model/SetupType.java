@@ -1,0 +1,22 @@
+package com.stock.marketscreener.model;
+
+public enum SetupType {
+    ORB_BREAKOUT,
+    ORB_BREAKDOWN,
+    VWAP_BREAKOUT,
+    VWAP_REJECTION,
+    VWAP_RECLAIM,
+    PDH_BREAKOUT,
+    PDL_BREAKDOWN,
+    GAP_BREAKOUT,
+    VOLUME_BREAKOUT,
+    BULL_FLAG,
+    BEAR_FLAG,
+    INSIDE_BAR_BREAKOUT,
+    INSIDE_BAR_BREAKDOWN,
+    DOUBLE_TOP,
+    DOUBLE_BOTTOM,
+    TREND_PULLBACK,
+    RANGE_BREAKOUT,
+    NO_SETUP
+}

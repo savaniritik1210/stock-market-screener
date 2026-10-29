@@ -1,0 +1,70 @@
+<div class="stock-page">
+  <a routerLink="/" class="back-link">&larr; Back to dashboard</a>
+  <header class="stock-header">
+    <div><h1>{{ symbol }}</h1><p>Intraday vs five-day swing: evidence, not promises.</p></div>
+    <button (click)="reload()" [disabled]="loading">Refresh</button>
+  </header>
+
+  <p class="notice">Research and paper trading only. Neither mode is inherently more accurate.
+    A high historical success rate does not guarantee profit or predict your next trade.</p>
+  <p *ngIf="loading" role="status">Evaluating historical entries for both modes. This can take a few seconds...</p>
+  <p *ngIf="!loading && error" role="alert" class="error-box">{{ error }}</p>
+
+  <ng-container *ngIf="!loading && comparison as c">
+    <section class="panel verdict">
+      <h2>{{ c.preferredMode === 'NO_CLEAR_WINNER' ? 'No clear historical winner' : c.preferredMode + ': stronger historical evidence' }}</h2>
+      <p>{{ c.comparisonReason }}</p>
+      <small>Evaluated {{ c.generatedAt | date:'dd MMM yyyy, HH:mm':'+0530' }} IST. Not an instruction to enter.</small>
+    </section>
+    <section class="grid" aria-label="Trading mode comparison">
+      <app-trade-evidence [assessment]="c.intraday"></app-trade-evidence>
+      <app-trade-evidence [assessment]="c.swing"></app-trade-evidence>
+    </section>
+
+    <div class="mode-select" role="group" aria-label="Select trade details">
+      <button (click)="selectedMode = 'INTRADAY'" [attr.aria-pressed]="selectedMode === 'INTRADAY'">Intraday details</button>
+      <button (click)="selectedMode = 'SWING'" [attr.aria-pressed]="selectedMode === 'SWING'">5-day swing details</button>
+    </div>
+    <ng-container *ngIf="selected as a">
+      <section class="panel">
+        <h2>{{ a.mode }} - {{ a.signal.signalType }}</h2>
+        <p class="notice" *ngIf="!a.entryEligible">Entry blocked. Research-only candidate, not a live trade recommendation.</p>
+        <p *ngIf="a.dataWarning">{{ a.dataWarning }}</p>
+        <p class="source-line">Source: <strong>{{ a.dataSource }}</strong> |
+          {{ a.isLive ? 'Live feed reported' : 'Not a live feed' }} |
+          Last completed candle:
+          {{ a.asOf ? (a.asOf | date:'dd MMM yyyy, HH:mm':'+0530') + ' IST' : 'Unavailable' }}
+        </p>
+        <div class="kv"><span>Last completed close (INR)</span><strong>{{ a.currentPrice === null ? 'N/A' : (a.currentPrice | number:'1.2-2') }}</strong></div>
+        <div class="kv"><span>Direction</span><strong>{{ a.signal.direction }}</strong></div>
+        <div class="kv"><span>Setup</span><strong>{{ a.signal.setup }}</strong></div>
+        <div class="kv"><span>Rule score (not probability)</span><app-score-badge [score]="a.signal.score"></app-score-badge></div>
+        <p>{{ a.signal.summary }}</p>
+      </section>
+      <section class="panel" *ngIf="a.signal.entry !== null && a.signal.signalType !== 'NO_SETUP'">
+        <h3>Conditional trade levels (INR)</h3>
+        <p>Hypothetical levels only. Confirm trigger and executable prices; do not enter solely from this report.</p>
+        <div class="kv"><span>Entry trigger</span><strong>{{ a.signal.entry | number:'1.2-2' }}</strong></div>
+        <div class="kv"><span>Stop loss</span><strong>{{ a.signal.stopLoss | number:'1.2-2' }}</strong></div>
+        <div class="kv"><span>Target 1</span><strong>{{ a.signal.target1 | number:'1.2-2' }}</strong></div>
+        <div class="kv"><span>Target 2</span><strong>{{ a.signal.target2 | number:'1.2-2' }}</strong></div>
+        <div class="kv"><span>Target 3</span><strong>{{ a.signal.target3 | number:'1.2-2' }}</strong></div>
+        <div class="kv"><span>Target 1 reward / risk, before costs</span><strong>{{ a.signal.riskReward | number:'1.2-2' }}</strong></div>
+      </section>
+      <section class="panel" *ngIf="a.candles.length">
+        <h3>{{ a.timeframe }} closes and volume</h3>
+        <app-price-chart [candles]="a.candles" [entry]="a.signal.entry"
+          [stopLoss]="a.signal.stopLoss" [target1]="a.signal.target1"></app-price-chart>
+        <small>Recent completed bars only. See the evidence cards for the full evaluation period.</small>
+      </section>
+      <section class="panel" *ngIf="a.signal.reasons?.length">
+        <h3>Reasons and risks</h3>
+        <ul class="reasons">
+          <li *ngFor="let r of a.signal.reasons" [class.positive]="r.positive" [class.negative]="!r.positive">
+            <span class="tag">{{ r.category }}</span>{{ r.description }}
+          </li>
+        </ul>
+      </section>
+    </ng-container>
+  </ng-container>
+</div>
